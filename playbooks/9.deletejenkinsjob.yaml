@@ -1,0 +1,10 @@
+- name: Installing web server
+  hosts: all
+  become: true
+  tasks:
+    - jenkins_job:
+      name: Maven
+      password: admin123
+      state: absent
+      url: http://35.227.109.235:8080/jenkins
+      user: admin

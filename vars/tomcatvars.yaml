@@ -1,0 +1,6 @@
+tomcat_url: "http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.90/bin/apache-tomcat-7.0.90-deployer.tar.gz"
+tomct_download_dest: "/opt/"
+tomcat_extracted: "/opt/apache-tomcat-9.0.8"
+tomcat_conf_dest: "/opt/tomcat"
+
+

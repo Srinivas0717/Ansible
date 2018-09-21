@@ -1,0 +1,73 @@
+---
+- name: installing apachitomcat
+  hosts: all # passwordhosts
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: include variables file
+      include_vars: 
+        dir: "/root/ansible/vars/" 
+        files_matching: "tomcatvars.yaml"
+#    - /root/ansible/vars/tomcatvars.yaml
+   
+    - name: installing java
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - java
+        - vim
+
+    - name: download and unarchive the tar file at destination
+      unarchive:
+        src: "{{tomcat_url}}" #"http://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.8/bin/apache-tomcat-9.0.8.tar.gz"
+        dest: "{{tomct_download_dest}}" #/opt/
+        remote_src: yes
+#    - name: checking for the file exestince
+#      stat:
+#        path: /opt/tomcat
+#        register: rc
+   
+    - name: checking for folder exestinve 
+      shell: "ls -ld {{tomcat_conf_dest}}" #/opt/tomcat"
+      register: out   
+      ignore_errors: yes
+
+    - name: pring out message
+      debug: 
+        msg: "{{out}}"
+    - name: moving tomcat to a other folder 
+      shell: "mv {{tomcat_extracted}} {{tomcat_conf_dest}}" #/opt/tomcat"
+      when: out is failed 
+#      when: rc.stat.exists == false
+
+    - name: starting apache server
+      shell: "nohup  {{tomcat_conf_dest}}/bin/startup.sh"
+
+    - name: createing a filder in ROOT directiry (Project)
+      file:
+        path: "{{tomcat_conf_dest}}/webapps/ROOT/TestDir"
+        state: directory
+        mode: 0755
+
+    - name: adding line in file
+      lineinfile:
+        path: "{{tomcat_conf_dest}}/webapps/ROOT/TestDir/index.html"
+        line: '<h1> This is test file created using ansible playbooks </h1>'
+        create: yes
+
+    - name: checking weather etomcat is already running or not
+      shell: "ps -ef | grep {{tomcat_conf_dest}} | grep -v grep"
+      register: out1
+      ignore_errors: yes
+
+    - name: pring out message
+      debug:
+        msg: "{{out1}}"
+
+    - name: starting tomcat server
+      shell:  nohup sh startup.sh
+      args:
+        chdir: "{{tomcat_conf_dest}}/bin/"
+      when: out1 is failed
+...

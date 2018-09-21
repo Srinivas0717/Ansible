@@ -1,0 +1,13 @@
+- name: registers
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: facts 
+      shell: uptime
+      register: output
+    - name: displaying facts form registers
+      debug: 
+        msg: '{{output}}'
+    - name: displaying the facts from registery
+      debug: 
+        msg: '{{output.stdout}}'    

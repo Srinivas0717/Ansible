@@ -1,0 +1,15 @@
+- name: printing varibles
+  gather_facts: false
+  hosts: all
+  vars:
+    first_name: srinivas
+    last_name: ponnaganti
+  tasks:
+    - name: displaying the vars from global section
+      debug: 
+        msg: 'firstname = {{first_name}}'
+    - name: displaying vars from local section
+      debug:
+        msg: 'firstname: {{first_name}}'
+      vars:
+        first_name: uday_lokesh

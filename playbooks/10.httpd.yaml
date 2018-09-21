@@ -1,0 +1,20 @@
+- name: installing web server
+  hosts: passwordhosts
+  gather_facts: false
+  become: true
+  tasks:
+  - name: installing web through yum command
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - httpd
+      - vim
+    notify: restart-httpd
+
+  - name: restarting httpd server
+    handlers:
+      - name: restart-httpd
+        service:
+          name: httpd
+          state: restarted

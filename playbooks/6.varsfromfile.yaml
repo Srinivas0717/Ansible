@@ -1,0 +1,14 @@
+---
+- name: display varibles from file
+  gather_facts: false
+  hosts: all
+  vars_files:
+    - /root/vars/varibles.yaml
+  tasks:
+    - name: print varibles from variable file
+      debug:
+        msg: 'firstname {{first_name}}'
+    - name: print varibles from variable file last_name
+      debug: 
+        msg: 'lastname {{last_name}}'
+...

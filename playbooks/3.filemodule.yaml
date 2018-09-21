@@ -1,0 +1,25 @@
+- name: file module example
+  hosts: all
+  order: sorted # it will sort the host mechines and run in the sorted sequence
+  gather_facts: no
+  tasks:
+# this block will change the exesting file permissions 
+    - name: file module
+      file:
+        path: /home/srini/srinivas
+        owner: root
+        group: root
+        mode: 0644
+      ignore_errors: yes
+# this block will create new file if not exists and set/change the persmissions
+    - name: touch file
+      become: true
+      file:
+        path: /home/psushma2302/testfile
+        state: touch
+        mode: "u+rw,g-wx,o-rwx"
+    - name: creating a file and write some content in that file
+      lineinfile:
+        path: /home/srini/index.html
+        line: 'this is created by ansible '
+        create: yes

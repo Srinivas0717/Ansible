@@ -1,0 +1,12 @@
+- name: PachageInstallation  
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: installingWGET
+    package:
+      name: wget
+      state: latest
+  - name: installing HTTPD
+    package:
+      name: httpd
+      state: absent
