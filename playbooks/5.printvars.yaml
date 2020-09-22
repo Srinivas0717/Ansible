@@ -12,4 +12,4 @@
       debug:
         msg: 'firstname: {{first_name}}'
       vars:
-        first_name: uday_lokesh
+        first_name: LocalName
